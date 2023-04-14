@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{{room.name}}{% endblock title %}
+
+{% block content %}
+<footer class="flex justify-between list-none">
+    <div class="w-1/2"
+        <ul> 
+            <form method="post" action="{% url 'core:room' room.id %}" class="bg-blue-100 pb-12">
+                {% csrf_token %}
+                <a href="{% url 'core:room' room.id %}">
+                    <div class="bg-blue-100 {% if request.user != room.host %} pb-12 {% endif %}">
+                        <li class="font-bold text-2xl">{{room.name}}</li>
+                        <li class="font-semibold text-2xl">Created: {{room.created}}</li>
+                        {% if room.created != room.updated %}
+                            <li class="mb-3 italic">Edited: {{room.updated}}</li>
+                        {% endif %}
+                        {% if room.description %}
+                            <li class="">{{room.description}}</li>
+                        {% endif %}
+                    </div>
+                </a>
+                {% if request.user == room.host %}
+                <div class="rounded-xl">
+                    <a href="{% url 'core:edit' room.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl">Edit</a>
+                    <a href="{% url 'core:delete' room.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a>
+                </div>
+                {% endif %}
+            </form>
+            {% for message in messages %}
+                {% if message.room.id == room.id %}
+                    <a href="{% url 'core:mess' message.id %}">
+                        <li class="{% if message.created == message.updated %} mb-3 {% endif %} font-semibold">Created by {{message.host}} on {{message.created}}</li>
+                        {% if message.created != message.updated %}
+                            <li class="mb-3 italic">Edited: {{message.updated}}</li>
+                        {% endif %}
+                        <li class="mb-3">{{message.body}}</li>
+                    </a>
+                    <hr>
+                    <hr>
+                    <hr>
+                {% endif %}
+            {% endfor %}
+            <li class="mb-10"></li>
+        </ul>
+    </div>
+    <div class="w-1/2 ">
+        <ul> 
+            {% if request.user.is_authenticated %}
+                <form method="post" action="{% url 'core:room' room.id %}">
+                    {% csrf_token %}
+                    <div class="space-y-4">
+                        {{form.as_p}}
+                    </div>
+                {% endif %}
+                {% if form.errors %}
+                    <div class="mb-3 p-6 bg-red-100 rounded-xl">
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <p class="error">{{ field.label }}: {{ field.errors|striptags }}</p>
+                            {% endif %}
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                            <p class="error">Non-field error: {{ form.non_field_errors|striptags }}</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                    <div class="flex justify-center">
+                        <button class="mt-10 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-600 rounded-xl text-white">
+                            Send here your message
+                        </button>
+                    </div>
+                    <li class="mb-10"></li>
+                </form>
+        </ul> 
+    </div>
+</footer>
+{% endblock content %}

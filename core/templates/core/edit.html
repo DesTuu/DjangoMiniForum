@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Message{% endblock title %}
+
+{% block content %}
+<form method="post" action=".">
+    {% csrf_token %}
+    <div class="space-y-4">
+        {{form.as_p}}
+    </div>
+
+    {% if form.errors %}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+            {% for field in form %}
+                {% if field.errors %}
+                    <p class="error">{{ field.label }}: {{ field.errors|striptags }}</p>
+                {% endif %}
+            {% endfor %}
+            {% if form.non_field_errors %}
+                <p class="error">Non-field error: {{ form.non_field_errors|striptags }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+    <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-500 rounded-xl text-white">Submit</button>
+</form>
+{% endblock content %}

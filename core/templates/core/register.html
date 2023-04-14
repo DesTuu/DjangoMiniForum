@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock title %}
+
+{% block content %}
+<div class="w-1/2 my-6 mx-auto p-6 bg-gray-100 rounded-xl">
+    <h1 class="font-semibold text-3xl mb-6 text-center"> Register </h1>
+    <form class="flex flex-col gap-4" method="post" action="{% url 'core:register' %}">
+        {% csrf_token %}
+        <label class="flex justify-between items-center">
+          <span class="w-24">Login:</span>
+          <span class="w-full">{{form.username}}</span>
+        </label>
+        <label class="flex justify-between items-center">
+          <span class="w-24">Email:</span>
+          <span class="w-full">{{form.email}}</span>
+        </label>
+        <label class="flex justify-between items-center">
+          <span class="w-24">Password:</span>
+          <span class="w-full">{{form.password1}}</span>
+        </label>
+        <label class="flex justify-between items-center">
+          <span class="w-24">Repeat password:</span>
+          <span class="w-full">{{form.password2}}</span>
+        </label>
+        {% if form.errors %}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+            {% for field in form %}
+                {% if field.errors %}
+                    <p class="error">{{ field.label }}: {{ field.errors|striptags }}</p>
+                {% endif %}
+            {% endfor %}
+            {% if form.non_field_errors %}
+                <p class="error">Non-field error: {{ form.non_field_errors|striptags }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-500 rounded-xl text-white">Submit</button>
+    </form>
+</div>
+{% endblock content %}

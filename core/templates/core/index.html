@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<footer class="flex justify-between">
+    <div class="w-1/6">
+        <ul>
+        {% for topic in topics %}
+            <li class="text-blue-700 font-bold {% if topic.id == topic_id %}bg-blue-200{% endif %}">
+                <a href="{% url 'core:index' %}?topic={{topic.id}}">{{topic.name}}</a>
+            </li>
+        {% endfor %}
+        </ul>
+        <ul>
+            <li><a href="{% url 'core:index' %}" class="mt-2 py-4 px-8 inline-block bg-yellow-500 text-lg rounded-xl text-white">Clear filter</a></li>
+        </ul>
+    </div>
+    <div class="w-5/6">
+        <ul> 
+        {% for room in rooms %}
+            <div class="bg-blue-100">
+                <a href="{% url 'core:room' room.id %}">
+                    <li class="font-bold text-2xl">{{room.name}}</li>
+                    <li class="font-semibold text-2xl">Created: {{room.created}}</li>
+                    {% if room.created != room.updated %}
+                        <li class="mb-3 italic">Edited: {{room.updated}}</li>
+                    {% endif %}
+                    {% if room.description %}
+                        <li class="mb-3">{{room.description}}</li>
+                    {% endif %}
+                </a>
+            </div>
+            {% comment %} {% for message in messages %}
+                {% if message.room.name == room.name %}
+                    <li>{{message.host}} - @{{message.updated}}</li>
+                    <li class="mb-4">{{message.body}}</li>
+                {% endif %}
+            {% endfor %}
+            <li class="mb-10"></li> {% endcomment %}
+        {% endfor %}
+        </ul> 
+    </div>
+</footer>
+{% endblock content %}
+{% comment %} "shadow-xl" {% endcomment %}

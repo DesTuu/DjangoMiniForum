@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Inbox{% endblock title %}
+
+{% block content %}
+<footer class="">
+    <div class="">
+        <span class="font-bold text-2xl">Your Rooms</span>
+        <ul class="grid grid-cols-3 gap-3">
+            {% for room in rooms %}
+                {% if request.user ==  room.host %}
+                    <div class="">
+                        <a href="{% url 'core:room' room.id %}">
+                            <div class="bg-blue-100 pb-12">
+                                <li class="font-bold text-2xl">{{room.name}}</li>
+                                <li class="font-semibold text-2xl">Created: {{room.created}}</li>
+                                {% if room.created != room.updated %}
+                                    <li class="mb-3 italic">Edited: {{room.updated}}</li>
+                                {% endif %}
+                                {% if room.description %}
+                                    <li class="">{{room.description}}</li>
+                                {% endif %}
+                            </div>
+                            <hr>
+                            <hr>
+                            <hr>
+                            {% for message in messages %}
+                                {% if message.room.name == room.name %}
+                                    <li class="{% if message.created == message.updated %} mb-3 {% endif %} font-semibold">Created by {{message.host}} on {{message.created}}</li>
+                                    {% if message.created != message.updated %}
+                                        <li class="mb-3 italic">Edited: {{message.updated}}</li>
+                                    {% endif %}
+                                    <li class="mb-3">{{message.body}}</li>
+                                    <hr>
+                                    <hr>
+                                    <hr>
+                                {% endif %}
+                            {% endfor %}
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>   
+    </div>
+</footer>
+{% endblock content %}
+

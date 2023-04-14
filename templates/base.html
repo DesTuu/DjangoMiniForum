@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>{% block title %}{% endblock title %}</title>
+    </head>
+
+    <body>
+        <nav class="flex justify-between mb-2">
+            <div class="flex font-bold text-4xl">
+                <a href="/">
+                    <img src="{% static 'images/suicune.gif' %}"" class="w-12 ml-2 rounded-xl"></img>
+                </a>
+                <a href="/">
+                    <h1 class="pt-1 text-blue-500">SUICUNY HOME</h1>
+                </a>
+            </div>
+            <div class="mt-3 mr-2 space-x-10">
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'core:add_room' %}" class="px-6 py-2 br-teal-700 bg-teal-500 text-white rounded-xl hover:bg-teal-900">Add room</a>
+                <a href="{% url 'core:inbox' %}" class="px-6 py-2 br-teal-700 bg-teal-500 text-white rounded-xl hover:bg-teal-900">Inbox</a>
+                {% comment %} <a href="#" class="px-6 py-2 br-teal-700 bg-teal-500 text-white rounded-xl hover:bg-teal-900">Profile</a> {% endcomment %}
+                <a href="#" class="px-6 py-2 br-teal-700 bg-teal-500 text-white rounded-xl hover:bg-teal-900">Log out</a>
+                {% else %}
+                <a href="{% url 'core:register' %}" class="px-6 py-2 br-teal-700 bg-teal-500 text-white rounded-xl hover:bg-teal-900">Sign up</a>
+                <a href="{% url 'core:login' %}" class="px-6 py-2 br-teal-700 bg-teal-500 text-white rounded-xl hover:bg-teal-900">Login</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <hr>
+        <hr>
+
+        <div class="ml-2">
+            {% block content %}
+            {% endblock content %}
+        </div>
+
+        <hr>
+        <hr>
+
+        <footer class="flex justify-between shadow-xl bg-gray-800">
+            <div class="ml-2 mb-2 w-4/5 pr-10 text-gray-400">
+                <p>Uważa się, że Suicune jest oparty na wielu stworzeniach i mitologicznych bóstwach, głównie na Qilinie lub "Kirin", wschodniej legendzie, która ma cechy smoka chińskiego, jednorożca, jelenia, wielkich kotów i innych bestii. Mówi się, że Qilin potrafi chodzić po wodzie i jest znany jako potężne i spokojne stworzenie. Grzebień na głowie Suicune'a z grubsza pasuje do opisu poroża bestii. Plamy Suicune'a są również znaczące, wydają się łączyć plamy lamparta, co jest trybutem dla Fūjina, boga Shinto z Północnego Wiatru, który nosi skórę lamparta. Same lamparty występują w Azji i są przedstawiane w mitach, które pokazują, że jest to powszechnie szanowane święte zwierzę, takie jak Qilin. Sposób, w jaki biegnie i ryczy w anime, może również odnosić się do lamparta. Będąc Pokémonem, który reprezentuje wiatr i deszcz, Suicune może również opierać się na niektórych z licznych mitów bóstw wiatru na świecie. Grzywa Suicune'a przypomina północną zorzę polarną. Suicune może być kombinacją 水 sui (woda) i 君 kun (monarcha). Tytuł gry, na którym jest maskotką, sugeruje, że może także pochodzić od 水晶 suishō (kryształ).</p>
+            </div>
+            <div class="w 1/5">
+                <ul class="space-y-4 mt-2 mr-10 text-gray-400 shadow-xl">
+                    <li><a href="{% url 'core:about' %}" class="text-lg font-semibold">About</a></li> 
+                    <li><a href="{% url 'core:faq' %}" class="text-lg font-semibold">FAQ</a></li>
+                    <li><a href="{% url 'core:contact' %}" class="text-lg font-semibold">Contact</a></li> 
+                    <li><a href="{% url 'core:tos' %}" class="text-lg font-semibold">Term of use</a></li> 
+                </ul>
+            </div>
+        </footer>
+    </body>
+</html>
